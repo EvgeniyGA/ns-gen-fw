@@ -23,12 +23,15 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "SEGGER_RTT.h"
 
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+#define dbg(s)                        SEGGER_RTT_WriteString( 0, s )//; HAL_Delay(1)
+#define dbgln(s)                      dbg( s "\n" )
+#define dbgf( format, ... )           SEGGER_RTT_printf( 0, ( const char * ) ( format ), ##__VA_ARGS__ ); HAL_Delay(1)
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -51,7 +54,10 @@
 void SystemClock_Config(void);
 static void MPU_Config(void);
 /* USER CODE BEGIN PFP */
-
+void init(void){
+	SEGGER_RTT_ConfigUpBuffer( 0, NULL, NULL, 0, SEGGER_RTT_MODE_NO_BLOCK_TRIM );
+    SEGGER_RTT_WriteString( 0, "SEGGER Real-Time-Terminal Sample\n" );
+}
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -67,7 +73,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
+	init();
   /* USER CODE END 1 */
 
   /* MPU Configuration--------------------------------------------------------*/
@@ -93,7 +99,7 @@ int main(void)
   MX_GPIO_Init();
   MX_USB_OTG_FS_PCD_Init();
   /* USER CODE BEGIN 2 */
-
+  dbgln("Init Finish \n\r Program started");
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -103,6 +109,8 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  HAL_Delay(1000);
+	  dbgln("from loop");
   }
   /* USER CODE END 3 */
 }
